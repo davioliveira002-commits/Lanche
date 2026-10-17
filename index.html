@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LANCHE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        .botao-fujao {
+            transition: all 0.15s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-pink-50 h-screen flex flex-col items-center justify-center overflow-hidden font-sans select-none">
+
+    <div class="text-center p-6 bg-white shadow-xl rounded-2xl max-w-md w-11/12 mx-auto relative z-10">
+        <h1 id="pergunta" class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+            Erika, vai pagar o lanche segunda-feira? 
+        </h1>
+        
+        <p id="mensagem-sub" class="text-sm text-gray-500 mb-8 h-6">
+            Pense bem antes de escolher... 
+        </p>
+
+        <div id="container-botoes" class="flex justify-center items-center gap-6 relative h-20">
+            <!-- Botão Sim -->
+            <button id="btn-sim" onclick="clicouSim()" class="bg-green-500 hover:bg-green-600 text-white font-bold px-8 py-3 rounded-full shadow-lg transition-transform transform hover:scale-110 z-20">
+                Sim 🥰
+            </button>
+
+            <button id="btn-nao" class="bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-3 rounded-full shadow-lg absolute right-10 botao-fujao z-20">
+                Não 😢
+            </button>
+        </div>
+    </div>
+
+    <div id="modal-sucesso" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-11/12 animate-bounce">
+            <h2 class="text-3xl font-bold text-pink-600 mb-2">Ebaaa!</h2>
+            <p class="text-gray-700 mb-6">Eu sabia que você diria sim! É o mínimo. Eu não quero pão de queijo. Se você não fizer essa gentileza, provavelmente eu vou morrer de fome e não é isso que queremos, né?</p>
+            <button onclick="reiniciar()" class="bg-pink-500 text-white font-bold px-6 py-2 rounded-full hover:bg-pink-600">
+                Recomeçar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const btnNao = document.getElementById('btn-nao');
+        const btnSim = document.getElementById('btn-sim');
+        const mensagemSub = document.getElementById('mensagem-sub');
+        const modalSucesso = document.getElementById('modal-sucesso');
+
+        const frases = [
+            "Opa, errou o botão! 😆",
+            "Certeza? Pensa de novo!",
+            "Deixa de ser mão de vaca!",
+            "Sabia que você era antipática.",
+            "Luma ficaria triste com você!",
+            "Você tem certeza  que a Luma te ama?",
+            "Você se orgulha disso????????"
+        ];
+
+        let contadorFugas = 0;
+
+        function fugir() {
+            const larguraJanela = window.innerWidth - btnNao.offsetWidth - 40;
+            const alturaJanela = window.innerHeight - btnNao.offsetHeight - 40;
+
+            const aleatorioX = Math.max(10, Math.floor(Math.random() * larguraJanela));
+            const aleatorioY = Math.max(10, Math.floor(Math.random() * alturaJanela));
+
+            btnNao.style.position = 'fixed';
+            btnNao.style.left = `${aleatorioX}px`;
+            btnNao.style.top = `${aleatorioY}px`;
+
+            mensagemSub.textContent = frases[contadorFugas % frases.length];
+            contadorFugas++;
+
+            let escalaAtual = 1 + (contadorFugas * 0.05);
+            btnSim.style.transform = `scale(${Math.min(escalaAtual, 1.5)})`;
+        }
+
+        btnNao.addEventListener('mouseover', fugir);
+        btnNao.addEventListener('click', fugir);
+        btnNao.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            fugir();
+        });
+
+        function clicouSim() {
+            modalSucesso.classList.remove('hidden');
+            modalSucesso.classList.add('flex');
+
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function reiniciar() {
+            modalSucesso.classList.add('hidden');
+            modalSucesso.classList.remove('flex');
+            btnNao.style.position = 'absolute';
+            btnNao.style.left = 'auto';
+            btnNao.style.top = 'auto';
+            btnSim.style.transform = 'scale(1)';
+            mensagemSub.textContent = "Pense bem antes de escolher... 😉";
+            contadorFugas = 0;
+        }
+    </script>
+</body>
+</html>
