@@ -9,6 +9,7 @@
     <style>
         .botao-fujao {
             transition: all 0.15s ease-out;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -63,9 +64,9 @@
 
         let contadorFugas = 0;
 
-        function fugir() {
-            const larguraJanela = window.innerWidth - btnNao.offsetWidth - 40;
-            const alturaJanela = window.innerHeight - btnNao.offsetHeight - 40;
+       function fugir() {
+            const larguraJanela = window.innerWidth - 120; 
+            const alturaJanela = window.innerHeight - 80;
 
             const aleatorioX = Math.max(10, Math.floor(Math.random() * larguraJanela));
             const aleatorioY = Math.max(10, Math.floor(Math.random() * alturaJanela));
@@ -73,6 +74,9 @@
             btnNao.style.position = 'fixed';
             btnNao.style.left = `${aleatorioX}px`;
             btnNao.style.top = `${aleatorioY}px`;
+            
+            btnNao.style.width = 'auto';
+            btnNao.style.maxWidth = '120px'; 
 
             mensagemSub.textContent = frases[contadorFugas % frases.length];
             contadorFugas++;
